@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg'
 const Login = () => {
     
@@ -5,6 +6,8 @@ const Login = () => {
         event.preventDefault();
         const form = event.target;
         const email = form.email.value;
+        const password = form.password.value;
+        console.log(email,password);
     }
 
     return (
@@ -36,6 +39,7 @@ const Login = () => {
                                 <input type="submit" className="btn btn-primary" value="Login" />
                             </div>
                         </form>
+                        <p>New to this? <Link to="/register">Register</Link> </p>
                     </div>
                 </div>
             </div>

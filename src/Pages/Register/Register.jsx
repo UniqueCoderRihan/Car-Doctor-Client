@@ -1,3 +1,4 @@
+import { Link } from 'react-router-dom';
 import img from '../../assets/images/login/login.svg'
 const Register = () => {
     const handleSubmit = event=>{
@@ -34,7 +35,7 @@ const Register = () => {
                                 </label>
                                 <input type="password" name='password' placeholder="password" className="input input-bordered" />
                                 <label className="label">
-                                    <a href="#" className="label-text-alt link link-hover">Alredy have an Account?</a>
+                                   <p>alredy Account? <Link to='/login'>Login</Link> </p>
                                 </label>
                             </div>
                             <div className="form-control mt-6">
