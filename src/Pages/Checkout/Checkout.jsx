@@ -1,50 +1,86 @@
-import { useLoaderData } from "react-router-dom";
+import { useContext } from "react";
+import { json, useLoaderData } from "react-router-dom";
+import { AuthContex } from "../../Providers/AuthProvider";
+import Swal from "sweetalert2";
 
 const Checkout = () => {
+    const {user} = useContext(AuthContex)
     const service = useLoaderData();
+    
     const { title, price, _id } = service;
     const handleSubmit=event=>{
         event.preventDefault();
         const form = event.target;
-        const email = form.email.value;
-        const fristName = form.fristName.value;
-        const lastName = form.lastName.value;
-        const phone = form.phone.value;
+        const name = form.name.value;
         const message = form.message.value;
-        const name= fristName+''+ lastName;
-        console.log(name,phone,email,message);
+        const email = form.email.value;
+        const amount = form.amount.value;
+        const order ={
+            customerName: name,
+            customerEmail: email,
+            amount: amount,
+            details: message
+        }
+        console.log(order);
+        fetch('http://localhost:5000/bookings',{
+            method: 'POST',
+            headers:{
+                'content-type':"application.json;"
+            },
+            body:JSON.stringify(order)
+        })
+        .then(res=>res.json())
+        .then(data=>{
+            console.log(data);
+            if(data.acknowledged){
+                Swal.fire({
+                    title: 'Success!',
+                    text: 'ThankYou! We Received Your Booking!!',
+                    icon: 'success',
+                    confirmButtonText: 'Done'
+                  })
+            }
+            else{
+                Swal.fire({
+                    title: 'Error!',
+                    text: 'Please Try Again Letter',
+                    icon: 'error',
+                    confirmButtonText: 'Cool'
+                  })
+            }
+        })
     }
     return (
         <div>
-            <h2>Book Service: {title}</h2>
+            <h2 className="text-3xl text-center my-2">Book Service: {title}</h2>
 
             <div className="hero min-h-screen bg-base-200">
                 <form onSubmit={handleSubmit}>
                     <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Frist Name</span>
+                                <span className="label-text"> Name</span>
                             </label>
-                            <input type="text" name="fristName" placeholder="Frist Name" className="input input-bordered" />
+                            <input type="text" name="name" placeholder=" Name" defaultValue={user?.displayName} className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Last Name</span>
+                                <span className="label-text">Date</span>
                             </label>
-                            <input type="text" placeholder="Last Name" name="lastName" className="input input-bordered" />
+                            <input type="date" placeholder="Date" name="date" className="input input-bordered" />
 
                         </div>
                         <div className="form-control">
                             <label className="label">
-                                <span className="label-text">Your Phone Number</span>
+                                <span className="label-text">Amount</span>
                             </label>
-                            <input type="number" placeholder="Enter Your Phone Number" name="phone" className="input input-bordered" />
+                            <input type="text" name="amount" defaultValue={"$"+ price} className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">
                                 <span className="label-text">Enter Your Email</span>
                             </label>
-                            <input type="email" placeholder="Email" name="email" required className="input input-bordered" />
+                            <input type="email" placeholder="Email" name="email" defaultValue={user?.email} required className="input input-bordered" />
 
                         </div>
                     </div>
