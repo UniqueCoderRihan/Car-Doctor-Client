@@ -1,54 +1,56 @@
 import { useContext } from "react";
-import { json, useLoaderData } from "react-router-dom";
+import { useLoaderData } from "react-router-dom";
 import { AuthContex } from "../../Providers/AuthProvider";
 import Swal from "sweetalert2";
 
 const Checkout = () => {
-    const {user} = useContext(AuthContex)
+    const { user } = useContext(AuthContex)
     const service = useLoaderData();
-    
-    const { title, price, _id } = service;
-    const handleSubmit=event=>{
+
+    const { title, price, img } = service;
+    console.log(service);
+    const handleSubmit = event => {
         event.preventDefault();
         const form = event.target;
         const name = form.name.value;
         const message = form.message.value;
         const email = form.email.value;
         const amount = form.amount.value;
-        const order ={
+        const order = {
             customerName: name,
             customerEmail: email,
             amount: amount,
+            image: img,
             details: message
         }
         console.log(order);
-        fetch('http://localhost:5000/bookings',{
+        fetch('http://localhost:5000/bookings', {
             method: 'POST',
-            headers:{
-                'content-type':"application.json;"
+            headers: {
+                'Content-type': 'application/json'
             },
-            body:JSON.stringify(order)
+            body: JSON.stringify(order)
         })
-        .then(res=>res.json())
-        .then(data=>{
-            console.log(data);
-            if(data.acknowledged){
-                Swal.fire({
-                    title: 'Success!',
-                    text: 'ThankYou! We Received Your Booking!!',
-                    icon: 'success',
-                    confirmButtonText: 'Done'
-                  })
-            }
-            else{
-                Swal.fire({
-                    title: 'Error!',
-                    text: 'Please Try Again Letter',
-                    icon: 'error',
-                    confirmButtonText: 'Cool'
-                  })
-            }
-        })
+            .then(res => res.json())
+            .then(data => {
+                console.log(data);
+                if (data.acknowledged) {
+                    Swal.fire({
+                        title: 'Success!',
+                        text: 'ThankYou! We Received Your Booking!!',
+                        icon: 'success',
+                        confirmButtonText: 'Done'
+                    })
+                }
+                else {
+                    Swal.fire({
+                        title: 'Error!',
+                        text: 'Please Try Again Letter',
+                        icon: 'error',
+                        confirmButtonText: 'Cool'
+                    })
+                }
+            })
     }
     return (
         <div>
@@ -74,7 +76,7 @@ const Checkout = () => {
                             <label className="label">
                                 <span className="label-text">Amount</span>
                             </label>
-                            <input type="text" name="amount" defaultValue={"$"+ price} className="input input-bordered" />
+                            <input type="text" name="amount" defaultValue={"$" + price} className="input input-bordered" />
                         </div>
                         <div className="form-control">
                             <label className="label">

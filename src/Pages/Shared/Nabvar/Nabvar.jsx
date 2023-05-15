@@ -1,11 +1,24 @@
 import { Link } from 'react-router-dom';
 import logo from '../../../assets/logo.svg'
+import { useContext } from 'react';
+import { AuthContex } from '../../../Providers/AuthProvider';
 
 const Nabvar = () => {
+    const {user,logOut} = useContext(AuthContex);
+    const handleLogout =()=>{
+        logOut()
+        .then()
+        .catch(error=>{
+            console.log(error);
+        })
+    }
     const nabItems = <>
         <li> <Link to='/'>Home</Link> </li>
         <li> <Link to='/about'>About</Link> </li>
-        <li> <Link to='/login'>Login</Link> </li>
+        {
+            user?.email ? <li> <Link onClick={handleLogout} >Logout</Link> </li>:
+            <button> <Link to='/login'>Login</Link> </button>
+        }
         
     </>
     return (
