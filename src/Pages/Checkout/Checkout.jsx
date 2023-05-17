@@ -7,7 +7,7 @@ const Checkout = () => {
     const { user } = useContext(AuthContex)
     const service = useLoaderData();
 
-    const { title, price, img } = service;
+    const { title, price, img,_id } = service;
     console.log(service);
     const handleSubmit = event => {
         event.preventDefault();
@@ -21,6 +21,8 @@ const Checkout = () => {
             customerEmail: email,
             amount: amount,
             image: img,
+            service: title,
+            service_id: _id,
             details: message
         }
         console.log(order);

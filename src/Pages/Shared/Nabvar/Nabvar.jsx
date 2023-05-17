@@ -16,7 +16,10 @@ const Nabvar = () => {
         <li> <Link to='/'>Home</Link> </li>
         <li> <Link to='/about'>About</Link> </li>
         {
-            user?.email ? <li> <Link onClick={handleLogout} >Logout</Link> </li>:
+            user?.email ?<>
+            <li> <Link onClick={handleLogout} >Logout</Link> </li>
+            <li> <Link to='/bookings'>My Booking</Link> </li>
+            </> :
             <button> <Link to='/login'>Login</Link> </button>
         }
         
